@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>delete files</title>
+</head>
+<body>
+<h1>delete files</h1>
+
+<form action="/delete-video" method="post">
+    <label>delete a video : </label><br>
+    <input type="text" placeholder="enter the name of the video" name="dlVideo"><br>
+    <input type="submit" value="delete the video">
+</form><br>
+
+<form action="/delete-audio" method="post">
+    <label>delete an audio : </label><br>
+    <input type="text" placeholder="enter the name of the audio" name="dlAudio"><br>
+    <input type="submit" value="delete the audio">
+</form><br>
+
+<form action="/delete-image" method="post">
+    <label>delete an image : </label><br>
+    <input type="text" placeholder="enter the name of the image" name="dlImage"><br>
+    <input type="submit" value="delete the image">
+</form><br>
+
+<a href="/">
+    <h5>Home</h5>
+</a>
+
+<a href="#">
+    <h5>File manager</h5>
+</a>
+
+<a href="upload-files">
+    <h5>File uploader</h5>
+</a>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<style>
+			body {
+				margin: 0;
+				padding: 2%;
+				text-align: center;
+				background-color: silver;
+			}
+
+			#h1 {
+				font-size: 10vw;
+				font-family: 'Cambria';
+				color: red;
+				animation-name: h1;
+				animation-duration: 2s;
+				animation-iteration-count: infinite;
+			}
+
+			#h2 {
+				font-size: 6vw;
+				font-family: 'Cambria';
+				color: blue;
+				animation-name: h2;
+				animation-duration: 2s;
+				animation-iteration-count: infinite;
+			}
+
+			@keyframes h1 {
+				0% {transform: rotate3d(.5, -1, 0, 20deg);color: red;}
+				25% {transform: rotate3d(.5, 2, 0, 20deg);color: red;}
+				50% {transform: rotate3d(-1, .5, 0, 20deg);color: blue;}
+				75% {transform: rotate3d(-1, -.5, 0, 20deg);color: blue;}
+				100% {transform: rotate3d(.5, -1, 0, 20deg);color: red;}
+			}
+
+			@keyframes h2 {
+				0% {transform: rotate3d(-0.5, -.5, 0, 30deg);color: blue;}
+				25% {transform: rotate3d(-0.5, .5, 0, 30deg);color: blue;}
+				50% {transform: rotate3d(.5, .5, 0, 30deg);color: red;}
+				75% {transform: rotate3d(.5, -.5, 0, 30deg);color: red;}
+				100% {transform: rotate3d(-0.5, -.5, 0, 30deg);color: blue;}
+			}
+		</style>
+	</head>
+	<body>
+		<h1 id='h1'>Error 500</h1>
+		<h2 id='h2'>Internal Server Error</h2>
+	</body>
+</html>
