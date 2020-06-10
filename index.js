@@ -36,12 +36,12 @@ app.get('/video-manager', function(req, res) {
 
 // upload page
 app.get('/upload-files', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/upload-files.html');
+    res.render(__dirname + '/code/ejs/upload-files', { ejsVideosFolders: JSON.stringify(require('./directories/videosDirectory').directory()), ejsAudiosFolders: JSON.stringify(require('./directories/audiosDirectory').directory()), ejsImagesFolders: JSON.stringify(require('./directories/imagesDirectory').directory()), ejsPdfsFolders: JSON.stringify(require('./directories/pdfDirectory').directory()), ejsEbooksFolders: JSON.stringify(require('./directories/ebooksDirectory').directory()), ejsCompressedSoftwaresFolders: JSON.stringify(require('./directories/compressedSoftwaresDirectory').directory()), ejsIsoSoftwaresFolders: JSON.stringify(require('./directories/isoSoftwaresDirectory').directory()), ejsCompressedGamesFolders: JSON.stringify(require('./directories/compressedGamesDirectory').directory()), ejsIsoGamesFolders: JSON.stringify(require('./directories/isoGamesDirectory').directory()), ejsApkAppsFolders: JSON.stringify(require('./directories/apkAppsDirectory').directory()), ejsCompressedAppsFolders: JSON.stringify(require('./directories/compressedAppsDirectory').directory()), ejsCompressedOthersFolders: JSON.stringify(require('./directories/compressedOthersDirectory').directory()), ejsIsoOthersFolders: JSON.stringify(require('./directories/isoOthersDirectory').directory()) });
 });
 
 // upload video
 app.post('/upload-video', function (req, res) {
-    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 2000 * 1024 * 1024 });
+    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 20000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
         console.log('files:', files);
@@ -151,7 +151,7 @@ app.get('/uploaded-audio', function (req, res) {
 
 // upload image
 app.post('/upload-image', function (req, res) {
-    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 2000 * 1024 * 1024 });
+    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 5000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
         console.log('files:', files);
@@ -305,7 +305,7 @@ app.get('/uploaded-book', function (req, res) {
 
 // upload software
 app.post('/upload-software', function (req, res) {
-    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 20000 * 1024 * 1024 });
+    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 40000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
         console.log('files:', files);
@@ -404,7 +404,7 @@ app.get('/uploaded-software', function (req, res) {
 
 // upload game
 app.post('/upload-game', function (req, res) {
-    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 20000 * 1024 * 1024 });
+    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 40000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
         console.log('files:', files);
@@ -602,7 +602,7 @@ app.get('/uploaded-apk', function (req, res) {
 
 // upload other
 app.post('/upload-book', function (req, res) {
-    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 2000 * 1024 * 1024 });
+    const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 5000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
         console.log('files:', files);

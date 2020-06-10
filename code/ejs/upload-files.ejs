@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        let videosFolders = <%- JSON.stringify( ejsVideosFolders ) %>;
+        videosFolders = JSON.parse(videosFolders);
+        let audiosFolders = <%- JSON.stringify( ejsAudiosFolders ) %>;
+        audiosFolders = JSON.parse(audiosFolders);
+        let imagesFolders = <%- JSON.stringify( ejsImagesFolders ) %>;
+        imagesFolders = JSON.parse(imagesFolders);
+        let pdfsFolders = <%- JSON.stringify( ejsPdfsFolders ) %>;
+        pdfsFolders = JSON.parse(pdfsFolders);
+        let ebooksFolders = <%- JSON.stringify( ejsEbooksFolders ) %>;
+        ebooksFolders = JSON.parse(ebooksFolders);
+        let compressedSoftwaresFolders = <%- JSON.stringify( ejsCompressedSoftwaresFolders ) %>;
+        compressedSoftwaresFolders = JSON.parse(compressedSoftwaresFolders);
+        let isoSoftwaresFolders = <%- JSON.stringify( ejsIsoSoftwaresFolders ) %>;
+        isoSoftwaresFolders = JSON.parse(isoSoftwaresFolders);
+        let compressedGamesFolders = <%- JSON.stringify( ejsCompressedGamesFolders ) %>;
+        compressedGamesFolders = JSON.parse(compressedGamesFolders);
+        let isoGamesFolders = <%- JSON.stringify( ejsIsoGamesFolders ) %>;
+        isoGamesFolders = JSON.parse(isoGamesFolders);
+        let apkAppsFolders = <%- JSON.stringify( ejsApkAppsFolders ) %>;
+        apkAppsFolders = JSON.parse(apkAppsFolders);
+        let compressedAppsFolders = <%- JSON.stringify( ejsCompressedAppsFolders ) %>;
+        compressedAppsFolders = JSON.parse(compressedAppsFolders);
+        let compressedOthersFolders = <%- JSON.stringify( ejsCompressedOthersFolders ) %>;
+        compressedOthersFolders = JSON.parse(compressedOthersFolders);
+        let isoOthersFolders = <%- JSON.stringify( ejsIsoOthersFolders ) %>;
+        isoOthersFolders = JSON.parse(isoOthersFolders);
+    </script>
+    <script src="/scripts/upload-files.js" defer="true"></script>
+    <meta charset="UTF-8">
+    <title>upload files</title>
+</head>
+<body>
+    <h1>upload files</h1><hr>
+
+    <form id="videos" action="/upload-video" method="post" enctype="multipart/form-data">
+        <label>upload videos : </label><br>
+        <p>create a folder (not required) : </p>
+        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input type="file" accept="video/*, .mkv, .avi" id="upVideo" name="upVideo" required multiple><br>
+        <input type="submit" value="upload the videos">
+    </form><br><hr>
+
+    <form id="audios" action="/upload-audio" method="post" enctype="multipart/form-data">
+        <label>upload audios : </label><br>
+        <p>create a folder (not required) : </p>
+        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input type="file" accept="audio/*" id="upAudio" name="upAudio" required multiple><br>
+        <input type="submit" value="upload the audios">
+    </form><br><hr>
+
+    <form id="images" action="/upload-image" method="post" enctype="multipart/form-data">
+        <label>upload images : </label><br>
+        <p>create a folder (not required) : </p>
+        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input type="file" accept="image/*" id="upImage" name="upImage" required multiple><br>
+        <input type="submit" value="upload the images">
+    </form><br><hr>
+
+    <form id="books" action="/upload-book" method="post" enctype="multipart/form-data">
+        <label>upload books : </label><br>
+        <select id="bookType" onchange="bookTypeChange(this)">
+            <option>PDF</option>
+            <option>eBook</option>
+        </select>
+        <p>create a folder (not required) : </p>
+        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input id="book" type="file" accept="application/pdf" id="upBook" name="upPdf" required multiple><br>
+        <input type="submit" value="upload the books">
+    </form><br><hr>
+
+    <form id="softwares" action="/upload-software" method="post" enctype="multipart/form-data">
+        <label>upload softwares : </label><br>
+        <select id="softwareType" onchange="softwareTypeChange(this)">
+            <option>Compressed</option>
+            <option>ISO</option>
+        </select>
+        <p>create a folder (not required) : </p>
+        <input type="text" class="folderName" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input id="software" type="file" accept=".zip, .rar, 7z" id="upSoftware" name="upCompressedSoftware" required multiple><br>
+        <input type="submit" value="upload the softwares">
+    </form><br><hr>
+
+    <form id="games" action="/upload-game" method="post" enctype="multipart/form-data">
+        <label>upload games : </label><br>
+        <select id="gameType" onchange="gameTypeChange(this)">
+            <option>Compressed</option>
+            <option>ISO</option>
+        </select>
+        <p>create a folder (not required) : </p>
+        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input id="game" type="file" accept=".zip, .rar, 7z" id="upGame" name="upCompressedGame" required multiple><br>
+        <input type="submit" value="upload the games">
+    </form><br><hr>
+
+    <form id="apps" action="/upload-apk" method="post" enctype="multipart/form-data">
+        <label>upload mobile applications : </label><br>
+        <select id="appType" onchange="apkTypeChange(this)">
+            <option>Apk</option>
+            <option>Compressed</option>
+        </select>
+        <p>create a folder (not required) : </p>
+        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input id="apk" type="file" accept=".apk" id="upApp" name="upApkApp" required multiple><br>
+        <input type="submit" value="upload the applications">
+    </form><br><hr>
+
+    <form id="others" action="/upload-others" method="post" enctype="multipart/form-data">
+        <label>upload others : </label><br>
+        <select id="otherType" onchange="otherTypeChange(this)">
+            <option>Compressed</option>
+            <option>ISO</option>
+        </select>
+        <p>create a folder (not required) : </p>
+        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
+        <input id="other" type="file" accept=".zip, .rar, 7z" id="upOther" name="upCompressedOther" required multiple><br>
+        <input type="submit" value="upload the files">
+    </form><br><hr>
+
+    <a href="/">
+        <h5>Home</h5>
+    </a>
+
+    <a href="#">
+        <h5>File manager</h5>
+    </a>
+
+    <a href="delete-files">
+        <h5>File deleter</h5>
+    </a>
+</body>
+</html>
