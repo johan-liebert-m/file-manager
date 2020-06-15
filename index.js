@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 
 // video manager
 app.get('/video-manager', function(req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/video-manager.html');
+    res.render(__dirname + '/code/ejs/video-manager', {  });
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -394,7 +394,7 @@ app.post('/upload-software', function (req, res) {
             }
         }
     });
-    res.redirect('/uploaded-book');
+    res.redirect('/uploaded-software');
 });
 
 // uploaded software
@@ -601,7 +601,7 @@ app.get('/uploaded-apk', function (req, res) {
 });
 
 // upload other
-app.post('/upload-book', function (req, res) {
+app.post('/upload-other', function (req, res) {
     const form = formidable({ multiples: true, keepExtensions: true, maxFileSize: 5000 * 1024 * 1024 });
     form.parse(req, function(err, fields, files) {
         console.log('fields:', fields);
@@ -691,7 +691,7 @@ app.post('/upload-book', function (req, res) {
             }
         }
     });
-    res.redirect('/uploaded-book');
+    res.redirect('/uploaded-other');
 });
 
 // uploaded other
@@ -754,6 +754,22 @@ app.get('/deleted-image', function (req, res) {
     res.sendFile(__dirname + '/code/webpages/upload-delete/deleted/delete-image.html')
 });
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// shutdown the server
+
+const { exec } = require('child_process');
+
+app.get('/shutdown', function(req, res) {
+  exec('shutdown -p', (err, stdout, stderr) => {
+    if (err) {
+      console.log('node couldn\'t execute the command');
+      return;
+    }
+  });
+  res.sendFile(__dirname + '/code/webpages/shutdown.html');
+});
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

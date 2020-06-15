@@ -1,25 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
+    <!-- // -->
     <meta charset="UTF-8">
     <title>uploaded file</title>
 </head>
 <body>
-<h1>your file is uploaded successfully</h1>
-<a href="/">
-    <h5>Home</h5>
-</a>
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File Manager</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Videos</a>
+                    <a class="dropdown-item" href="#">Audios</a>
+                    <a class="dropdown-item" href="#">Images</a>
+                    <a class="dropdown-item" href="#">Books</a>
+                    <a class="dropdown-item" href="#">Softwares</a>
+                    <a class="dropdown-item" href="#">Games</a>
+                    <a class="dropdown-item" href="#">Applications</a>
+                    <a class="dropdown-item" href="#">Others</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload-files">Upload</a>
+            </li>
+        </ul>
+    </nav>
 
-<a href="#">
-    <h5>File manager</h5>
-</a>
+    <div class="container-fluid">
+        <div class="jumbotron row">
+            <h1 class="text-success">your file is uploaded successfully</h1>
+        </div>
+    </div>
 
-<a href="upload-files">
-    <h5>File uploader</h5>
-</a>
-
-<a href="delete-files">
-    <h5>File deleter</h5>
-</a>
+    <audio id="tada" style="display: none" autoplay>
+        <source src="/music/tada.mp3"></source>
+    </audio>
 </body>
 </html>

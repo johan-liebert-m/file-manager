@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
+    <!-- // -->
     <script>
         let videosFolders = <%- JSON.stringify( ejsVideosFolders ) %>;
         videosFolders = JSON.parse(videosFolders);
@@ -31,105 +38,229 @@
     </script>
     <script src="/scripts/upload-files.js" defer="true"></script>
     <meta charset="UTF-8">
-    <title>upload files</title>
+    <title>Upload Files</title>
+    <style>
+        form {
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 5px;
+            padding: 5px;
+        }
+        h1 {
+            color: dodgerblue;
+        }
+        #circle-loading {
+            z-index: 10;
+            width: 40vw;
+            height: 40vw;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-left: -20vw;
+            margin-top: -20vw;
+            border-width: 1vw;
+            display: none;
+        }
+        #background-loading {
+            z-index: 9;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #95999c;
+            opacity: 50%;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>upload files</h1><hr>
 
-    <form id="videos" action="/upload-video" method="post" enctype="multipart/form-data">
-        <label>upload videos : </label><br>
-        <p>create a folder (not required) : </p>
-        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input type="file" accept="video/*, .mkv, .avi" id="upVideo" name="upVideo" required multiple><br>
-        <input type="submit" value="upload the videos">
-    </form><br><hr>
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File Manager</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/video-manager">Videos</a>
+                    <a class="dropdown-item" href="#">Audios</a>
+                    <a class="dropdown-item" href="#">Images</a>
+                    <a class="dropdown-item" href="#">Books</a>
+                    <a class="dropdown-item" href="#">Softwares</a>
+                    <a class="dropdown-item" href="#">Games</a>
+                    <a class="dropdown-item" href="#">Applications</a>
+                    <a class="dropdown-item" href="#">Others</a>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/upload-files">Upload</a>
+            </li>
+        </ul>
+    </nav>
 
-    <form id="audios" action="/upload-audio" method="post" enctype="multipart/form-data">
-        <label>upload audios : </label><br>
-        <p>create a folder (not required) : </p>
-        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input type="file" accept="audio/*" id="upAudio" name="upAudio" required multiple><br>
-        <input type="submit" value="upload the audios">
-    </form><br><hr>
+    <div class="container-fluid">
+        <div class="jumbotron row">
+            <h1>Upload files</h1>
+        </div>
 
-    <form id="images" action="/upload-image" method="post" enctype="multipart/form-data">
-        <label>upload images : </label><br>
-        <p>create a folder (not required) : </p>
-        <br><input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input type="file" accept="image/*" id="upImage" name="upImage" required multiple><br>
-        <input type="submit" value="upload the images">
-    </form><br><hr>
+        <div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="videos" action="/upload-video" method="post" enctype="multipart/form-data">
+                        <b><label>Upload videos : </label></b><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" class="folderName" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept="video/*, .mkv, .avi" id="upVideo" name="upVideo" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the videos">
+                    </form><br><hr>
+                </div>
 
-    <form id="books" action="/upload-book" method="post" enctype="multipart/form-data">
-        <label>upload books : </label><br>
-        <select id="bookType" onchange="bookTypeChange(this)">
-            <option>PDF</option>
-            <option>eBook</option>
-        </select>
-        <p>create a folder (not required) : </p>
-        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input id="book" type="file" accept="application/pdf" id="upBook" name="upPdf" required multiple><br>
-        <input type="submit" value="upload the books">
-    </form><br><hr>
+                <div class="col-lg-6">
+                    <form id="audios" action="/upload-audio" method="post" enctype="multipart/form-data">
+                        <b><label>Upload audios : </label></b><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept="audio/*" id="upAudio" name="upAudio" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the audios">
+                    </form><br><hr>
+                </div>
+            </div>
 
-    <form id="softwares" action="/upload-software" method="post" enctype="multipart/form-data">
-        <label>upload softwares : </label><br>
-        <select id="softwareType" onchange="softwareTypeChange(this)">
-            <option>Compressed</option>
-            <option>ISO</option>
-        </select>
-        <p>create a folder (not required) : </p>
-        <input type="text" class="folderName" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input id="software" type="file" accept=".zip, .rar, 7z" id="upSoftware" name="upCompressedSoftware" required multiple><br>
-        <input type="submit" value="upload the softwares">
-    </form><br><hr>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="images" action="/upload-image" method="post" enctype="multipart/form-data">
+                        <b><label>Upload images : </label></b><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept="image/*" id="upImage" name="upImage" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the images"><br><br><br><br><br><br>
+                    </form><br><hr>
+                </div>
 
-    <form id="games" action="/upload-game" method="post" enctype="multipart/form-data">
-        <label>upload games : </label><br>
-        <select id="gameType" onchange="gameTypeChange(this)">
-            <option>Compressed</option>
-            <option>ISO</option>
-        </select>
-        <p>create a folder (not required) : </p>
-        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input id="game" type="file" accept=".zip, .rar, 7z" id="upGame" name="upCompressedGame" required multiple><br>
-        <input type="submit" value="upload the games">
-    </form><br><hr>
+                <div class="col-lg-6">
+                    <form id="books" action="/upload-book" method="post" enctype="multipart/form-data">
+                        <b><label>Upload books : </label></b><br><br>
+                        <label>File format : </label>
+                        <select class="form-control" id="bookType" onchange="bookTypeChange(this)">
+                            <option>PDF</option>
+                            <option>eBook</option>
+                        </select><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept="application/pdf" id="upBook" name="upPdf" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the books">
+                    </form><br><hr>
+                </div>
+            </div>
 
-    <form id="apps" action="/upload-apk" method="post" enctype="multipart/form-data">
-        <label>upload mobile applications : </label><br>
-        <select id="appType" onchange="apkTypeChange(this)">
-            <option>Apk</option>
-            <option>Compressed</option>
-        </select>
-        <p>create a folder (not required) : </p>
-        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input id="apk" type="file" accept=".apk" id="upApp" name="upApkApp" required multiple><br>
-        <input type="submit" value="upload the applications">
-    </form><br><hr>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="softwares" action="/upload-software" method="post" enctype="multipart/form-data">
+                        <b><label>Upload softwares : </label></b><br><br>
+                        <label>File format : </label>
+                        <select class="form-control" id="softwareType" onchange="softwareTypeChange(this)">
+                            <option>Compressed</option>
+                            <option>ISO</option>
+                        </select><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept=".zip, .rar, 7z" id="software" name="upCompressedSoftware" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the softwares">
+                    </form><br><hr>
+                </div>
 
-    <form id="others" action="/upload-others" method="post" enctype="multipart/form-data">
-        <label>upload others : </label><br>
-        <select id="otherType" onchange="otherTypeChange(this)">
-            <option>Compressed</option>
-            <option>ISO</option>
-        </select>
-        <p>create a folder (not required) : </p>
-        <input type="text" class="folderName" name="folderName" placeholder="enter a folder name to create a new folder" autocomplete="off"><br>
-        <input id="other" type="file" accept=".zip, .rar, 7z" id="upOther" name="upCompressedOther" required multiple><br>
-        <input type="submit" value="upload the files">
-    </form><br><hr>
+                <div class="col-lg-6">
+                    <form id="games" action="/upload-game" method="post" enctype="multipart/form-data">
+                        <b><label>Upload games : </label></b><br><br>
+                        <label>File format : </label>
+                        <select class="form-control" id="gameType" onchange="gameTypeChange(this)">
+                            <option>Compressed</option>
+                            <option>ISO</option>
+                        </select><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept=".zip, .rar, 7z" id="game" name="upCompressedGame" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the games">
+                    </form><br><hr>
+                </div>
+            </div>
 
-    <a href="/">
-        <h5>Home</h5>
-    </a>
+            <div class="row">
+                <div class="col-lg-6">
+                    <form id="apps" action="/upload-apk" method="post" enctype="multipart/form-data">
+                        <b><label>Upload mobile applications : </label></b><br><br>
+                        <label>File format : </label>
+                        <select class="form-control" id="appType" onchange="apkTypeChange(this)">
+                            <option>Apk</option>
+                            <option>Compressed</option>
+                        </select><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept=".apk" id="apk" name="upApkApp" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the applications">
+                    </form><br><hr>
+                </div>
 
-    <a href="#">
-        <h5>File manager</h5>
-    </a>
+                <div class="col-lg-6">
+                    <form id="others" action="/upload-other" method="post" enctype="multipart/form-data">
+                        <b><label>Upload others : </label></b><br><br>
+                        <label>File format : </label>
+                        <select class="form-control" id="otherType" onchange="otherTypeChange(this)">
+                            <option>Compressed</option>
+                            <option>ISO</option>
+                        </select><br>
+                        <p>Choose an existing folder or create a new one (not required) : </p>
+                        <label>Choose an existing folder : &nbsp;</label>
+                        <br><label>Create a new folder : </label>
+                        <input class="form-control folderName" type="text" name="folderName" autocomplete="off"><br>
+                        <input class="up-file" type="file" accept=".zip, .rar, 7z" id="other" name="upCompressedOther" required multiple><br><br>
+                        <input class="btn btn-primary submit" type="submit" value="Upload the files">
+                    </form><br><hr>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="delete-files">
-        <h5>File deleter</h5>
-    </a>
+    <div class="spinner-border text-primary" id="circle-loading"></div>
+    <div id="background-loading"></div>
+    <audio id="music-loading" style="display: none" loop>
+        <source src="/music/Funny1.mp3"></source>
+    </audio>
+<script>
+function loading() {
+    let circleLoading = document.getElementById("circle-loading");
+    let backgroundLoading = document.getElementById("background-loading");
+    let musicLoading = document.getElementById("music-loading");
+    circleLoading.style.display = "block";
+    backgroundLoading.style.display = "block";
+    document.body.style.overflow = "hidden";
+    musicLoading.play();
+}
+let submits = document.getElementsByClassName("submit");
+let upFile = document.getElementsByClassName("up-file");
+for (let i = 0; i < submits.length; i++) {
+    submits[i].addEventListener("click", function() {
+      if (upFile[i].files.length != 0) {
+        loading();
+      }
+    });
+}
+</script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 // to choose the type of the uploaded file
 
 function bookTypeChange(s) {
-    let book = document.getElementById("book");
+    let book = document.getElementById("upBook");
     if (s.value == "PDF") {
         book.accept = "application/pdf";
         book.name = "upPdf";
@@ -68,7 +68,7 @@ function useExistingFolder(f, s) {
     f.getElementsByClassName("folderName")[0].value = s.value;
 }
 
-function createFolderSelect(folders, formId, childToRemove) {
+function createFolderSelect(folders, formId, childToRemove, insertBefore) {
     let form = document.getElementById(formId);
     form.childNodes[childToRemove].remove();
     let select = document.createElement("select");
@@ -78,68 +78,69 @@ function createFolderSelect(folders, formId, childToRemove) {
         folder.appendChild(folderName);
         select.appendChild(folder);
     }
-    form.insertBefore(select, form.childNodes[5]);
+    select.setAttribute("class", "form-control");
     select.addEventListener("change", function () {
         useExistingFolder(form, select);
     });
+    form.insertBefore(select, form.childNodes[insertBefore]);
 }
 
-createFolderSelect(videosFolders, "videos", 3);
-createFolderSelect(audiosFolders, "audios", 3);
-createFolderSelect(imagesFolders, "images", 3);
+createFolderSelect(videosFolders, "videos", 3, 6);
+createFolderSelect(audiosFolders, "audios", 3, 6);
+createFolderSelect(imagesFolders, "images", 3, 6);
 
-createFolderSelect(pdfsFolders, "books", 5);
+createFolderSelect(pdfsFolders, "books", 13, 13);
 let bookType = document.getElementById("bookType");
 bookType.addEventListener("change", function () {
     if (bookType.value == "PDF") {
-        createFolderSelect(pdfsFolders, "books", 5);
+        createFolderSelect(pdfsFolders, "books", 13, 13);
     }
     else if (bookType.value == "eBook") {
-        createFolderSelect(ebooksFolders, "books", 5);
+        createFolderSelect(ebooksFolders, "books", 13, 13);
     }
 });
 
-createFolderSelect(compressedSoftwaresFolders, "softwares", 5);
+createFolderSelect(compressedSoftwaresFolders, "softwares", 13, 13);
 let softwareType = document.getElementById("softwareType");
 softwareType.addEventListener("change", function () {
     if (softwareType.value == "Compressed") {
-        createFolderSelect(compressedSoftwaresFolders, "softwares", 5);
+        createFolderSelect(compressedSoftwaresFolders, "softwares", 13, 13);
     }
     else if (softwareType.value == "ISO") {
-        createFolderSelect(isoSoftwaresFolders, "softwares", 5);
+        createFolderSelect(isoSoftwaresFolders, "softwares", 13, 13);
     }
 });
 
-createFolderSelect(compressedGamesFolders, "games", 5);
+createFolderSelect(compressedGamesFolders, "games", 13, 13);
 let gameType = document.getElementById("gameType");
 gameType.addEventListener("change", function () {
     if (gameType.value == "Compressed") {
-        createFolderSelect(compressedGamesFolders, "games", 5);
+        createFolderSelect(compressedGamesFolders, "games", 13, 13);
     }
     else if (gameType.value == "ISO") {
-        createFolderSelect(isoGamesFolders, "games", 5);
+        createFolderSelect(isoGamesFolders, "games", 13, 13);
     }
 });
 
-createFolderSelect(apkAppsFolders, "apps", 5);
+createFolderSelect(apkAppsFolders, "apps", 13, 13);
 let appType = document.getElementById("appType");
 appType.addEventListener("change", function () {
     if (appType.value == "Apk") {
-        createFolderSelect(apkAppsFolders, "apps", 5);
+        createFolderSelect(apkAppsFolders, "apps", 13, 13);
     }
     else if (appType.value == "Compressed") {
-        createFolderSelect(compressedAppsFolders, "apps", 5);
+        createFolderSelect(compressedAppsFolders, "apps", 13, 13);
     }
 });
 
-createFolderSelect(compressedOthersFolders, "others", 5);
+createFolderSelect(compressedOthersFolders, "others", 13, 13);
 let otherType = document.getElementById("otherType");
 otherType.addEventListener("change", function () {
     if (otherType.value == "Compressed") {
-        createFolderSelect(compressedOthersFolders, "others", 5);
+        createFolderSelect(compressedOthersFolders, "others", 13, 13);
     }
     else if (otherType.value == "ISO") {
-        createFolderSelect(isoOthersFolders, "others", 5);
+        createFolderSelect(isoOthersFolders, "others", 13, 13);
     }
 });
 
@@ -176,10 +177,10 @@ upImage.onchange = function() {
     limitSize(upImage, 5000, "images");
 };
 
-let upBook = document.getElementById("book");
+let upBook = document.getElementById("upBook");
 
 upBook.onchange = function() {
-    limitSize(upBook, 2000, "books");
+    limitSize(upBook, 2000, "upBook");
 };
 
 let upSoftware = document.getElementById("software");
@@ -206,3 +207,4 @@ upOther.onchange = function() {
     limitSize(upOther, 5000, "others");
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
