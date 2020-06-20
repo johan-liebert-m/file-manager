@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Image Manager</title>
+<!-- css -->
+<link rel="stylesheet" href="/stylesheets/image-manager.css">
+<!-- // -->
+<!-- script -->
+<script src="/scripts/image-manager.js" defer="true"></script>
+<!-- // -->
+<!-- frameworks -->
+<!-- Bootstrap 4 -->
+<link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
+<script src="/scripts/jquery.min.js" defer="true"></script>
+<script src="/scripts/bootstrap.min.js" defer="true"></script>
+<script src="/scripts/popper.min.js" defer="true"></script>
+<!-- // -->
+<script>
+let fontawesome4 = document.createElement("link");
+fontawesome4.setAttribute("rel", "stylesheet");
+fontawesome4.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+window.addEventListener("load", function() {
+    document.head.appendChild(fontawesome4);
+});
+</script>
+<!-- // -->
+<script>
+let fontawesome4 = document.createElement("link");
+fontawesome4.setAttribute("rel", "stylesheet");
+fontawesome4.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+let jquery = document.createElement("script");
+jquery.setAttribute("src", "/scripts/jquery.min.js");
+let bootstrapJs = document.createElement("script");
+bootstrapJs.setAttribute("src", "/scripts/bootstrap.min.js");
+let popper = document.createElement("script");
+popper.setAttribute("src", "/scripts/popper.min.js");
+window.addEventListener("load", function() {
+    document.head.appendChild(fontawesome4);
+    document.head.appendChild(jquery);
+    document.head.appendChild(bootstrapJs);
+    document.head.appendChild(popper);
+});
+</script>
+<!-- // -->
+<script>
+let images = <%- JSON.stringify( ejsImages ) %>;
+images = JSON.parse(images);
+let directoriesNames = <%- JSON.stringify( ejsDirectoriesNames ) %>;
+directoriesNames = JSON.parse(directoriesNames);
+let directoriesImages = <%- JSON.stringify( ejsDirectoriesImages ) %>;
+directoriesImages = JSON.parse(directoriesImages);
+</script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File Manager</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/video-manager">Videos</a>
+                    <a class="dropdown-item" href="#">Audios</a>
+                    <a class="dropdown-item" href="#">Images</a>
+                    <a class="dropdown-item" href="#">Books</a>
+                    <a class="dropdown-item" href="#">Softwares</a>
+                    <a class="dropdown-item" href="#">Games</a>
+                    <a class="dropdown-item" href="#">Applications</a>
+                    <a class="dropdown-item" href="#">Others</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload-files">Upload</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <div class="nav-link" style="cursor: pointer;user-select: none" onclick="showShutdownPopUp()">Shutdown</div>
+          </li>
+        </ul>
+    </nav>
+    <div id="background-shutdown" class="container-fluid">
+        <div class="row">
+            <h1 class="text-info">Are you sure you want to shutdown the server !</h1>
+        </div><br><br><br>
+        <div class="row">
+            <button type="button" onclick="shutdown()" class="btn btn-success col-lg-5">Yes</button>
+            <div class="col-lg-2" style="height: 2.5vw"></div>
+            <button type="button" onclick="hideShutdownPopUp()" class="btn btn-danger col-lg-5">No</button>
+        </div>
+    </div>
+    <!-- Shutdown popup -->
+    <link rel="stylesheet" href="/stylesheets/shutdown.css">
+    <script src="/scripts/shutdown.js" defer="true"></script>
+    <!-- // -->
+
+<div class="container-fluid">
+    <div class="jumbotron row pt-4 pb-4 mb-1 mt-1" style="word-wrap: break-word">
+        <h2>Image Manager</h2>
+    </div>
+    <div class="jumbotron row pt-4 pb-4 mb-3" style="word-wrap: break-word">
+        <h2 class="text-center col-12" id="image-title">No image is displayed</h2>
+    </div>
+    <div class="row pl-3 pr-0" style="width: 100%;height: 40vw">
+        <div id="manager" class="col-lg-3 col-sm-12 mb-4">
+        </div>
+        <div class="col-lg-9 col-sm-12 mb-5" style="width: 100%;height: 100%;border: 1px solid black;border-radius: 5px;text-align: center;position:relative">
+            <div id="image" controls>
+                <img id="image-source" src="/images/welcome.jpg">
+            </div>
+            <div id="image-control-lg" class="pt-2 pb-2 pl-3 pr-3 row">
+                <div class="col-lg-2">
+                    <i onclick="zoomOut()" class="fa fa-search-minus align-baseline icon" style="font-size: 2.7vw;cursor: pointer;user-select: none"></i>
+                </div>
+                <div class="col-lg-2">
+                    <i onclick="zoomIn()" class="fa fa-search-plus align-baseline icon" style="font-size: 2.7vw;cursor: pointer;user-select: none"></i>
+                </div>
+                <div class="col-lg-2">
+                    <i onclick="previous()" class="fa fa-arrow-circle-left align-baseline icon" style="font-size: 2.8vw;cursor: pointer;user-select: none"></i>
+                </div>
+                <div class="col-lg-2">
+                    <i onclick="next()" class="fa fa-arrow-circle-right align-baseline icon" style="font-size: 2.8vw;cursor: pointer;user-select: none"></i>
+                </div>
+                <div class="col-lg-2">
+                    <i onclick="rotateRight()" class="fa fa-rotate-right align-baseline icon" style="font-size: 2.5vw;line-height: 3vw;cursor: pointer;user-select: none"></i>
+                </div>
+                <div class="col-lg-2">
+                    <i onclick="rotateLeft()" class="fa fa-rotate-left align-baseline icon" style="font-size: 2.5vw;line-height: 3vw;cursor: pointer;user-select: none"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width: 100vw;height: 4vw"></div>
+
+<div class="contain-fluid">
+    <div id="image-control-sm" class="pt-1 pb-1 pl-2 pr-0 row">
+        <div class="col-sm-6">
+            <i onclick="zoomOut()" class="fa fa-search-minus align-baseline icon" style="font-size: 6vw;cursor: pointer;user-select: none;margin-bottom: 2vw"></i>
+        </div>
+        <div class="col-sm-6">
+            <i onclick="zoomIn()" class="fa fa-search-plus align-baseline icon" style="font-size: 6vw;cursor: pointer;user-select: none;margin-bottom: 2vw"></i>
+        </div>
+        <div class="col-sm-6">
+            <i onclick="previous()" class="fa fa-arrow-circle-left align-baseline icon" style="font-size: 6vw;cursor: pointer;user-select: none;margin-bottom: 2vw"></i>
+        </div>
+        <div class="col-sm-6">
+            <i onclick="next()" class="fa fa-arrow-circle-right align-baseline icon" style="font-size: 6vw;cursor: pointer;user-select: none;margin-bottom: 2vw"></i>
+        </div>
+        <div class="col-sm-6">
+            <i onclick="rotateRight()" class="fa fa-rotate-right align-baseline icon" style="font-size: 6vw;line-height: 3vw;cursor: pointer;user-select: none;margin-bottom: 3.5vw"></i>
+        </div>
+        <div class="col-sm-6">
+            <i onclick="rotateLeft()" class="fa fa-rotate-left align-baseline icon" style="font-size: 6vw;line-height: 3vw;cursor: pointer;user-select: none"></i>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

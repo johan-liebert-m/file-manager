@@ -4,38 +4,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
-    <script src="/scripts/jquery.min.js"></script>
-    <script src="/scripts/bootstrap.min.js"></script>
-    <script src="/scripts/popper.min.js"></script>
+    <script src="/scripts/jquery.min.js" defer="true"></script>
+    <script src="/scripts/bootstrap.min.js" defer="true"></script>
+    <script src="/scripts/popper.min.js" defer="true"></script>
     <!-- // -->
-    <script>
-        let videosFolders = <%- JSON.stringify( ejsVideosFolders ) %>;
-        videosFolders = JSON.parse(videosFolders);
-        let audiosFolders = <%- JSON.stringify( ejsAudiosFolders ) %>;
-        audiosFolders = JSON.parse(audiosFolders);
-        let imagesFolders = <%- JSON.stringify( ejsImagesFolders ) %>;
-        imagesFolders = JSON.parse(imagesFolders);
-        let pdfsFolders = <%- JSON.stringify( ejsPdfsFolders ) %>;
-        pdfsFolders = JSON.parse(pdfsFolders);
-        let ebooksFolders = <%- JSON.stringify( ejsEbooksFolders ) %>;
-        ebooksFolders = JSON.parse(ebooksFolders);
-        let compressedSoftwaresFolders = <%- JSON.stringify( ejsCompressedSoftwaresFolders ) %>;
-        compressedSoftwaresFolders = JSON.parse(compressedSoftwaresFolders);
-        let isoSoftwaresFolders = <%- JSON.stringify( ejsIsoSoftwaresFolders ) %>;
-        isoSoftwaresFolders = JSON.parse(isoSoftwaresFolders);
-        let compressedGamesFolders = <%- JSON.stringify( ejsCompressedGamesFolders ) %>;
-        compressedGamesFolders = JSON.parse(compressedGamesFolders);
-        let isoGamesFolders = <%- JSON.stringify( ejsIsoGamesFolders ) %>;
-        isoGamesFolders = JSON.parse(isoGamesFolders);
-        let apkAppsFolders = <%- JSON.stringify( ejsApkAppsFolders ) %>;
-        apkAppsFolders = JSON.parse(apkAppsFolders);
-        let compressedAppsFolders = <%- JSON.stringify( ejsCompressedAppsFolders ) %>;
-        compressedAppsFolders = JSON.parse(compressedAppsFolders);
-        let compressedOthersFolders = <%- JSON.stringify( ejsCompressedOthersFolders ) %>;
-        compressedOthersFolders = JSON.parse(compressedOthersFolders);
-        let isoOthersFolders = <%- JSON.stringify( ejsIsoOthersFolders ) %>;
-        isoOthersFolders = JSON.parse(isoOthersFolders);
-    </script>
+<script>
+let videosFolders = <%- JSON.stringify( ejsVideosFolders ) %>;
+videosFolders = JSON.parse(videosFolders);
+let audiosFolders = <%- JSON.stringify( ejsAudiosFolders ) %>;
+audiosFolders = JSON.parse(audiosFolders);
+let imagesFolders = <%- JSON.stringify( ejsImagesFolders ) %>;
+imagesFolders = JSON.parse(imagesFolders);
+let pdfsFolders = <%- JSON.stringify( ejsPdfsFolders ) %>;
+pdfsFolders = JSON.parse(pdfsFolders);
+let ebooksFolders = <%- JSON.stringify( ejsEbooksFolders ) %>;
+ebooksFolders = JSON.parse(ebooksFolders);
+let compressedSoftwaresFolders = <%- JSON.stringify( ejsCompressedSoftwaresFolders ) %>;
+compressedSoftwaresFolders = JSON.parse(compressedSoftwaresFolders);
+let isoSoftwaresFolders = <%- JSON.stringify( ejsIsoSoftwaresFolders ) %>;
+isoSoftwaresFolders = JSON.parse(isoSoftwaresFolders);
+let compressedGamesFolders = <%- JSON.stringify( ejsCompressedGamesFolders ) %>;
+compressedGamesFolders = JSON.parse(compressedGamesFolders);
+let isoGamesFolders = <%- JSON.stringify( ejsIsoGamesFolders ) %>;
+isoGamesFolders = JSON.parse(isoGamesFolders);
+let apkAppsFolders = <%- JSON.stringify( ejsApkAppsFolders ) %>;
+apkAppsFolders = JSON.parse(apkAppsFolders);
+let compressedAppsFolders = <%- JSON.stringify( ejsCompressedAppsFolders ) %>;
+compressedAppsFolders = JSON.parse(compressedAppsFolders);
+let compressedOthersFolders = <%- JSON.stringify( ejsCompressedOthersFolders ) %>;
+compressedOthersFolders = JSON.parse(compressedOthersFolders);
+let isoOthersFolders = <%- JSON.stringify( ejsIsoOthersFolders ) %>;
+isoOthersFolders = JSON.parse(isoOthersFolders);
+</script>
     <script src="/scripts/upload-files.js" defer="true"></script>
     <meta charset="UTF-8">
     <title>Upload Files</title>
@@ -86,7 +86,7 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/video-manager">Videos</a>
                     <a class="dropdown-item" href="#">Audios</a>
-                    <a class="dropdown-item" href="#">Images</a>
+                    <a class="dropdown-item" href="/image-manager">Images</a>
                     <a class="dropdown-item" href="#">Books</a>
                     <a class="dropdown-item" href="#">Softwares</a>
                     <a class="dropdown-item" href="#">Games</a>
@@ -98,7 +98,26 @@
                 <a class="nav-link" href="/upload-files">Upload</a>
             </li>
         </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+              <div class="nav-link" style="cursor: pointer;user-select: none" onclick="showShutdownPopUp()">Shutdown</div>
+          </li>
+        </ul>
     </nav>
+    <div id="background-shutdown" class="container-fluid">
+        <div class="row">
+            <h1 class="text-info">Are you sure you want to shutdown the server !</h1>
+        </div><br><br><br>
+        <div class="row">
+            <button type="button" onclick="shutdown()" class="btn btn-success col-lg-5">Yes</button>
+            <div class="col-lg-2" style="height: 2.5vw"></div>
+            <button type="button" onclick="hideShutdownPopUp()" class="btn btn-danger col-lg-5">No</button>
+        </div>
+    </div>
+    <!-- Shutdown popup -->
+    <link rel="stylesheet" href="/stylesheets/shutdown.css">
+    <script src="/scripts/shutdown.js" defer="true"></script>
+    <!-- // -->
 
     <div class="container-fluid">
         <div class="jumbotron row">

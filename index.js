@@ -29,7 +29,14 @@ app.get('/', function (req, res) {
 
 // video manager
 app.get('/video-manager', function(req, res) {
-    res.render(__dirname + '/code/ejs/video-manager', {  });
+    res.render(__dirname + '/code/ejs/video-manager', { ejsVideos: JSON.stringify(require('./directories/videosDirectory').videos()), ejsDirectoriesNames: JSON.stringify(require('./directories/videosDirectory').directoriesNames()), ejsDirectoriesVideos: JSON.stringify(require('./directories/videosDirectory').directoriesVideos()) });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// image manager
+app.get('/image-manager', function(req, res) {
+    res.render(__dirname + '/code/ejs/image-manager', { ejsImages: JSON.stringify(require('./directories/imagesDirectory').images()), ejsDirectoriesNames: JSON.stringify(require('./directories/imagesDirectory').directoriesNames()), ejsDirectoriesImages: JSON.stringify(require('./directories/imagesDirectory').directoriesImages()) });
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,103 @@
+html {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-width: 100%;
+    min-height: 100%;
+    position: relative;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color: dodgerblue;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 768px) {
+  #manager {
+    height: 70vw;
+  }
+}
+
+#manager {
+    background-color: #e9ecef;
+    padding: 0;
+    height: 40vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 5px;
+}
+
+#manager ul * {
+    user-select: none;
+}
+
+#manager ul li {
+    color: #007bff;
+}
+
+#manager ul li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: dodgerblue;
+    transform: scale(1.15);
+    transition: all .3s;
+}
+
+#image {
+    width: inherit;
+    height: 90%;
+    text-align: center;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+#image-source {
+    width: auto;
+    height: 100%;
+    transition: transform .3s;
+}
+
+#image-control-lg {
+    height: 10%;
+    width: 100%;
+    background-color: black;
+    position:absolute;
+    bottom: 0;
+    background-color: rgba(230, 230, 0, .6);
+}
+
+#image-control-sm {
+    display: none;
+}
+
+@media only screen and (max-width: 992px) {
+    #image {
+        height: 100%;
+    }
+    #image-control-lg {
+        display: none;
+    }
+    #image-control-sm {
+        display: block;
+        position: fixed;
+        left: 0;
+        bottom: 10%;
+        background-color: red;
+        background-color: rgba(230, 230, 0, 1);
+        border-radius: 1vw;
+    }
+}
