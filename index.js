@@ -105,7 +105,7 @@ app.post('/upload-video', function (req, res) {
 
 // uploaded video
 app.get('/uploaded-video', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-video.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-video.html');
 });
 
 // upload audio
@@ -160,7 +160,7 @@ app.post('/upload-audio', function (req, res) {
 
 // uploaded audio
 app.get('/uploaded-audio', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-audio.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-audio.html');
 });
 
 // upload image
@@ -215,7 +215,7 @@ app.post('/upload-image', function (req, res) {
 
 // uploaded image
 app.get('/uploaded-image', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-image.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-image.html');
 });
 
 // upload book
@@ -314,7 +314,7 @@ app.post('/upload-book', function (req, res) {
 
 // uploaded book
 app.get('/uploaded-book', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-book.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-book.html');
 });
 
 // upload software
@@ -413,7 +413,7 @@ app.post('/upload-software', function (req, res) {
 
 // uploaded software
 app.get('/uploaded-software', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-software.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-software.html');
 });
 
 // upload game
@@ -512,7 +512,7 @@ app.post('/upload-game', function (req, res) {
 
 // uploaded game
 app.get('/uploaded-game', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-game.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-game.html');
 });
 
 // upload apk
@@ -611,7 +611,7 @@ app.post('/upload-apk', function (req, res) {
 
 // uploaded apk
 app.get('/uploaded-apk', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-apk.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-apk.html');
 });
 
 // upload other
@@ -710,7 +710,7 @@ app.post('/upload-other', function (req, res) {
 
 // uploaded other
 app.get('/uploaded-other', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/uploaded/uploaded-other.html');
+    res.sendFile(__dirname + '/code/webpages/upload/uploaded/uploaded-other.html');
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
