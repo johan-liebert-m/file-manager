@@ -4,9 +4,6 @@ function setImage(src, title, imgLI) {
     document.getElementById("image-source").setAttribute("src", src);
     displayedImg = imgLI;
 }
-function insertAfter(referenceNode, newNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
 let manager = document.getElementById("manager");
 let ul = document.createElement("ul");
 ul.setAttribute("id", "managerUL");
@@ -59,6 +56,7 @@ for (let i = 0; i < directoriesNames.length; i++) {
     sUL.setAttribute("id", "f" + i);
     for (let j = 0; j < directoriesImages[i].length; j++) {
         let sLI = document.createElement("li");
+        sLI.setAttribute("id", "f" + i + "i" + j);
         sLI.setAttribute("class", "list-group-item");
         let sA = document.createElement("a");
         sA.setAttribute("title", directoriesImages[i][j]);
@@ -78,6 +76,9 @@ for (let i = 0; i < directoriesNames.length; i++) {
 manager.appendChild(ul);
 
 function next() {
+    document.getElementById("image-source").style.transform = "scale(1)";
+    zoom = 1;
+    rotate = 0;
     if (displayedImg != null) {
         if ((displayedImg.nextSibling != null && displayedImg.parentNode.id != "managerUL") || (displayedImg.nextSibling != null && displayedImg.nextSibling.getAttribute("data-toggle") != "collapse")) {
             displayedImg.nextSibling.click();
@@ -86,6 +87,9 @@ function next() {
 }
 
 function previous() {
+    document.getElementById("image-source").style.transform = "scale(1)";
+    zoom = 1;
+    rotate = 0;
     if (displayedImg != null) {
         if ((displayedImg.previousSibling != null && displayedImg.parentNode.id != "managerUL") || (displayedImg.previousSibling != null && displayedImg.previousSibling.getAttribute("data-toggle") != "collapse")) {
             if (displayedImg.previousSibling != null) {
@@ -319,4 +323,58 @@ document.addEventListener("keydown", function(event) {
     else if (event.which == 109) {
         zoomOut();
     }
-})
+    else if (event.which == 46) {
+        showDeleteImagePopper();
+    }
+});
+
+function showDeleteImagePopper() {
+    if (document.getElementById("image-source").getAttribute("src") != "/images/welcome.jpg") {
+        document.getElementById("delete-image-popper-container").style.visibility = "visible";
+        document.getElementById("delete-image-popper").style.transform = "translate(-50%, -50%) scale(1)";
+    }
+}
+
+document.getElementById("delete-icon").addEventListener("click", showDeleteImagePopper);
+
+function deleteIconSize(x) {
+	if (x.matches) {
+    	document.getElementById("delete-icon").style.fontSize = "6.5vw";
+	} else {
+		document.getElementById("delete-icon").style.fontSize = "4vw";
+	}
+}
+
+let x = window.matchMedia("(max-width: 900px)");
+deleteIconSize(x);
+x.addListener(deleteIconSize);
+
+function hideDeleteImagePopper() {
+    document.getElementById("delete-image-popper-container").style.visibility = "hidden";
+    document.getElementById("delete-image-popper").style.transform = "translate(-50%, -50%) scale(0)";
+}
+
+function deleteImage() {
+    $.post("/delete-image",
+    {
+        imgSrc: document.getElementById("image-source").getAttribute("src")
+    },
+    function(data, status){
+        alert("Data: " + data + "\nStatus: " + status);
+    });
+    document.getElementById("hideDeleteImage").click();
+    let deletedImg = displayedImg
+    if (displayedImg.nextSibling != null) {
+        displayedImg.nextSibling.click()
+    }
+    else if (displayedImg.previousSibling != null){
+        displayedImg.previousSibling.click();
+    }
+    else {
+        document.getElementById("image-source").setAttribute("src", "/images/welcome.jpg");
+        document.getElementById("image-title").innerHTML = "No image is displayed";
+        deletedImg.parentNode.previousSibling.childNodes[1].className = "fa fa-arrow-down";
+    }
+    deletedImg.remove();
+    deletedImg = null;
+}

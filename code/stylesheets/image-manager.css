@@ -27,6 +27,9 @@ h2 {
   #manager {
     height: 70vw;
   }
+  .delete-image-text {
+      display: none;
+  }
 }
 
 #manager {
@@ -55,6 +58,19 @@ h2 {
     color: dodgerblue;
     transform: scale(1.15);
     transition: all .3s;
+}
+
+#image-view-container {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
+    position:relative;
+}
+
+#image-view-container:hover .delete-icon {
+    opacity: 1;
 }
 
 #image {
@@ -100,4 +116,56 @@ h2 {
         background-color: rgba(230, 230, 0, 1);
         border-radius: 1vw;
     }
+}
+
+.delete-icon {
+    font-size: 4vw;
+    z-index: 8;
+    position: absolute;
+    top: 0;
+    right: .5vw;
+    color: #ff1a1a;
+    opacity: 0;
+    user-select: none;
+    cursor: pointer;
+    transition: color .3s, opacity .2s, transform .3s;
+}
+
+.delete-icon:hover {
+    color: #cc0000;
+}
+
+.delete-icon:active {
+    color: #800000;
+    transform: rotate(90deg);
+}
+
+#delete-image-popper-container {
+    overflow-y: auto;
+    z-index: 9;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(217, 217, 217, .5);
+    height: 100vh;
+    width: 100vw;
+    visibility: hidden;
+    transition: visibility .4s;
+}
+
+#delete-image-popper {
+    z-index: 10;
+    height: 30vw;
+    width: 40vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 0;
+    margin: 0;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform .4s;
 }

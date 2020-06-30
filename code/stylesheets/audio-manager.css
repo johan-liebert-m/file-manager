@@ -23,7 +23,7 @@ body {
       #manager {
         height: 70vw;
       }
-      .delete-video-text {
+      .delete-audio-text {
           display: none;
       }
     }
@@ -35,7 +35,7 @@ body {
         overflow-x: hidden;
         border-radius: 5px;
     }
-    #manager ul * {
+    #manager ul {
         user-select: none;
     }
     #manager ul li {
@@ -52,7 +52,7 @@ body {
         transition: all .3s;
     }
 
-    #video-container:hover .delete-icon {
+    #audio-container:hover .delete-icon {
         opacity: 1;
     }
 
@@ -89,7 +89,7 @@ body {
       }
     }
 
-    #delete-video-popper-container {
+    #delete-audio-popper-container {
         overflow-y: auto;
         z-index: 9;
         position: fixed;
@@ -106,7 +106,7 @@ body {
         transition: visibility .4s;
     }
 
-    #delete-video-popper {
+    #delete-audio-popper {
         z-index: 10;
         height: 30vw;
         width: 40vw;

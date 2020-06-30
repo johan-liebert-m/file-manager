@@ -1,10 +1,9 @@
-function setVideo(src, title) {
+let displayedVideo = null;
+function setVideo(src, title, videoLI) {
     document.getElementById("video-title").innerHTML = title;
     document.getElementById("video-source").setAttribute("src", src);
     document.getElementById("video").load();
-}
-function insertAfter(referenceNode, newNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    displayedVideo = videoLI;
 }
 let manager = document.getElementById("manager");
 let ul = document.createElement("ul");
@@ -16,10 +15,10 @@ for (let i = 0; i < videos.length; i++) {
     a.setAttribute("title", videos[i]);
     a.innerHTML = videos[i];
     a.addEventListener("click", function() {
-        setVideo("/videos/" + a.innerHTML, a.innerHTML);
+        setVideo("/videos/" + a.innerHTML, a.innerHTML, li);
     });
     li.addEventListener("click", function() {
-        setVideo("/videos/" + a.innerHTML, a.innerHTML);
+        setVideo("/videos/" + a.innerHTML, a.innerHTML, li);
     });
     li.appendChild(a);
     ul.appendChild(li);
@@ -62,10 +61,10 @@ for (let i = 0; i < directoriesNames.length; i++) {
         sA.setAttribute("title", directoriesVideos[i][j]);
         sA.innerHTML = directoriesVideos[i][j];
         sA.addEventListener("click", function() {
-            setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML);
+            setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
         });
         sLI.addEventListener("click", function() {
-            setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML);
+            setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
         });
         sLI.appendChild(sA);
         sUL.appendChild(sLI);
@@ -74,3 +73,61 @@ for (let i = 0; i < directoriesNames.length; i++) {
     ul.appendChild(sUL);
 }
 manager.appendChild(ul);
+
+// keypress
+document.addEventListener("keydown", function(event) {
+    if (event.which == 46) {
+        showDeleteVideoPopper();
+    }
+});
+
+function showDeleteVideoPopper() {
+    if (document.getElementById("video-source").getAttribute("src") != "") {
+        document.getElementById("delete-video-popper-container").style.visibility = "visible";
+        document.getElementById("delete-video-popper").style.transform = "translate(-50%, -50%) scale(1)";
+    }
+}
+
+document.getElementById("delete-icon").addEventListener("click", showDeleteVideoPopper);
+
+function deleteIconSize(x) {
+	if (x.matches) {
+    	document.getElementById("delete-icon").style.fontSize = "6.5vw";
+	} else {
+		document.getElementById("delete-icon").style.fontSize = "4vw";
+	}
+}
+
+let x = window.matchMedia("(max-width: 900px)");
+deleteIconSize(x);
+x.addListener(deleteIconSize);
+
+function hideDeleteVideoPopper() {
+    document.getElementById("delete-video-popper-container").style.visibility = "hidden";
+    document.getElementById("delete-video-popper").style.transform = "translate(-50%, -50%) scale(0)";
+}
+
+function deleteVideo() {
+    $.post("/delete-video",
+    {
+        videoSrc: document.getElementById("video-source").getAttribute("src")
+    },
+    function(data, status){
+        alert("Data: " + data + "\nStatus: " + status);
+    });
+    document.getElementById("hideDeleteVideo").click();
+    let deletedVideo = displayedVideo
+    if (displayedVideo.nextSibling != null) {
+        displayedVideo.nextSibling.click()
+    }
+    else if (displayedVideo.previousSibling != null){
+        displayedVideo.previousSibling.click();
+    }
+    else {
+        document.getElementById("video-source").setAttribute("src", "/videos/welcome.jpg");
+        document.getElementById("video-title").innerHTML = "No video is displayed";
+        deletedVideo.parentNode.previousSibling.childNodes[1].className = "fa fa-arrow-down";
+    }
+    deletedVideo.remove();
+    deletedVideo = null;
+}

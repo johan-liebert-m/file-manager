@@ -4,17 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
-    <script src="/scripts/jquery.min.js" defer="true"></script>
-    <script src="/scripts/bootstrap.min.js" defer="true"></script>
-    <script src="/scripts/popper.min.js" defer="true"></script>
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
     <!-- // -->
     <meta charset="UTF-8">
-    <title>Home</title>
-    <style>
-        h1 {
-            color: dodgerblue;
-        }
-    </style>
+    <title>uploaded video</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
@@ -62,8 +57,12 @@
 
     <div class="container-fluid">
         <div class="jumbotron row">
-            <h1>Home server for storage</h1>
+            <h1 class="text-success">your video is uploaded successfully</h1>
         </div>
     </div>
+
+    <audio id="tada" style="display: none" autoplay>
+        <source src="/music/tada.mp3"></source>
+    </audio>
 </body>
 </html>

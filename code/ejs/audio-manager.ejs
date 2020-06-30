@@ -3,12 +3,12 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="UTF-8">
-<title>Video Manager</title>
+<title>Audio Manager</title>
 <!-- css -->
-<link rel="stylesheet" href="/stylesheets/video-manager.css">
+<link rel="stylesheet" href="/stylesheets/audio-manager.css">
 <!-- // -->
 <!-- script -->
-<script src="/scripts/video-manager.js" defer="true"></script>
+<script src="/scripts/audio-manager.js" defer="true"></script>
 <!-- // -->
 <!-- frameworks -->
 <!-- Bootstrap 4 -->
@@ -27,12 +27,12 @@ window.addEventListener("load", function() {
 </script>
 <!-- // -->
 <script>
-let videos = <%- JSON.stringify( ejsVideos ) %>;
-videos = JSON.parse(videos);
+let audios = <%- JSON.stringify( ejsAudios ) %>;
+audios = JSON.parse(audios);
 let directoriesNames = <%- JSON.stringify( ejsDirectoriesNames ) %>;
 directoriesNames = JSON.parse(directoriesNames);
-let directoriesVideos = <%- JSON.stringify( ejsDirectoriesVideos ) %>;
-directoriesVideos = JSON.parse(directoriesVideos);
+let directoriesAudios = <%- JSON.stringify( ejsDirectoriesAudios ) %>;
+directoriesAudios = JSON.parse(directoriesAudios);
 </script>
 </head>
 <body>
@@ -82,32 +82,32 @@ directoriesVideos = JSON.parse(directoriesVideos);
 
 <div class="container-fluid">
     <div class="jumbotron row pt-4 pb-4 mb-1 mt-1" style="word-wrap: break-word">
-        <h2>Video Manager</h2>
+        <h2>Audio Manager</h2>
     </div>
     <div class="jumbotron row pt-4 pb-4 mb-3" style="word-wrap: break-word">
-        <h2 class="text-center col-12" id="video-title">No video is playing</h2>
+        <h2 class="text-center col-12" id="audio-title">No audio is playing</h2>
     </div>
     <div class="row pl-3 pr-0" style="width: 100%;height: 40vw">
         <div id="manager" class="col-lg-3 col-sm-12 mb-4">
         </div>
-        <div id="video-container" class="col-lg-9 col-sm-12 mb-5" style="width: 100%;height: 100%">
+        <div id="audio-container" class="col-lg-9 col-sm-12 mb-5" style="width: 100%;height: 100%">
             <i id="delete-icon" class="fa fa-close delete-icon" style="font-size: 4vw"></i>
-            <video id="video" controls style="width: 100%;height: 100%;border: 1px solid black;border-radius: 5px">
-                <source id="video-source" src="">
-            </video>
+            <audio id="audio" controls style="width: 100%;height: 100%;border: 1px solid black;border-radius: 5px;background-image: url('/images/waterfall.gif');background-size: 100% 100%">
+                <source id="audio-source" src="">
+            </audio>
         </div>
     </div>
 </div>
 
-<div id="delete-video-popper-container" class="container-fluid">
-    <div id="delete-video-popper" class="container-fluid">
+<div id="delete-audio-popper-container" class="container-fluid">
+    <div id="delete-audio-popper" class="container-fluid">
         <div class="row">
-            <h1 class="text-info delete-video-text">Are you sure you want to delete this video !</h1>
+            <h1 class="text-info delete-audio-text">Are you sure you want to delete this audio !</h1>
         </div><br><br><br>
         <div class="row">
-            <button type="button" onclick="deleteVideo()" class="btn btn-success col-lg-5">Delete</button>
+            <button type="button" onclick="deleteAudio()" class="btn btn-success col-lg-5">Delete</button>
             <div class="col-lg-2" style="height: 2.5vw"></div>
-            <button id="hideDeleteVideo" type="button" onclick="hideDeleteVideoPopper()" class="btn btn-danger col-lg-5">Cancel</button>
+            <button id="hideDeleteAudio" type="button" onclick="hideDeleteAudioPopper()" class="btn btn-danger col-lg-5">Cancel</button>
         </div>
     </div>
 </div>

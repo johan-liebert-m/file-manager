@@ -27,24 +27,6 @@ window.addEventListener("load", function() {
 </script>
 <!-- // -->
 <script>
-let fontawesome4 = document.createElement("link");
-fontawesome4.setAttribute("rel", "stylesheet");
-fontawesome4.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
-let jquery = document.createElement("script");
-jquery.setAttribute("src", "/scripts/jquery.min.js");
-let bootstrapJs = document.createElement("script");
-bootstrapJs.setAttribute("src", "/scripts/bootstrap.min.js");
-let popper = document.createElement("script");
-popper.setAttribute("src", "/scripts/popper.min.js");
-window.addEventListener("load", function() {
-    document.head.appendChild(fontawesome4);
-    document.head.appendChild(jquery);
-    document.head.appendChild(bootstrapJs);
-    document.head.appendChild(popper);
-});
-</script>
-<!-- // -->
-<script>
 let images = <%- JSON.stringify( ejsImages ) %>;
 images = JSON.parse(images);
 let directoriesNames = <%- JSON.stringify( ejsDirectoriesNames ) %>;
@@ -64,8 +46,8 @@ directoriesImages = JSON.parse(directoriesImages);
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File Manager</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/video-manager">Videos</a>
-                    <a class="dropdown-item" href="#">Audios</a>
-                    <a class="dropdown-item" href="#">Images</a>
+                    <a class="dropdown-item" href="/audio-manager">Audios</a>
+                    <a class="dropdown-item" href="/image-manager">Images</a>
                     <a class="dropdown-item" href="#">Books</a>
                     <a class="dropdown-item" href="#">Softwares</a>
                     <a class="dropdown-item" href="#">Games</a>
@@ -108,7 +90,8 @@ directoriesImages = JSON.parse(directoriesImages);
     <div class="row pl-3 pr-0" style="width: 100%;height: 40vw">
         <div id="manager" class="col-lg-3 col-sm-12 mb-4">
         </div>
-        <div class="col-lg-9 col-sm-12 mb-5" style="width: 100%;height: 100%;border: 1px solid black;border-radius: 5px;text-align: center;position:relative">
+        <div class="col-lg-9 col-sm-12 mb-5" id="image-view-container">
+            <i id="delete-icon" class="fa fa-close delete-icon" style="font-size: 4vw"></i>
             <div id="image" controls>
                 <img id="image-source" src="/images/welcome.jpg">
             </div>
@@ -138,7 +121,7 @@ directoriesImages = JSON.parse(directoriesImages);
 
 <div style="width: 100vw;height: 4vw"></div>
 
-<div class="contain-fluid">
+<div class="container-fluid">
     <div id="image-control-sm" class="pt-1 pb-1 pl-2 pr-0 row">
         <div class="col-sm-6">
             <i onclick="zoomOut()" class="fa fa-search-minus align-baseline icon" style="font-size: 6vw;cursor: pointer;user-select: none;margin-bottom: 2vw"></i>
@@ -157,6 +140,19 @@ directoriesImages = JSON.parse(directoriesImages);
         </div>
         <div class="col-sm-6">
             <i onclick="rotateLeft()" class="fa fa-rotate-left align-baseline icon" style="font-size: 6vw;line-height: 3vw;cursor: pointer;user-select: none"></i>
+        </div>
+    </div>
+</div>
+
+<div id="delete-image-popper-container" class="container-fluid">
+    <div id="delete-image-popper" class="container-fluid pt-0">
+        <div class="row mt-0">
+            <h1 class="text-info delete-image-text">Are you sure you want to delete this image !</h1>
+        </div><br><br><br>
+        <div class="row">
+            <button type="button" onclick="deleteImage()" class="btn btn-success col-lg-5">Delete</button>
+            <div class="col-lg-2" style="height: 2.5vw"></div>
+            <button id="hideDeleteImage" type="button" onclick="hideDeleteImagePopper()" class="btn btn-danger col-lg-5">Cancel</button>
         </div>
     </div>
 </div>

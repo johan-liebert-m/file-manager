@@ -34,6 +34,13 @@ app.get('/video-manager', function(req, res) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// audio manager
+app.get('/audio-manager', function(req, res) {
+    res.render(__dirname + '/code/ejs/audio-manager', { ejsAudios: JSON.stringify(require('./directories/audiosDirectory').audios()), ejsDirectoriesNames: JSON.stringify(require('./directories/audiosDirectory').directoriesNames()), ejsDirectoriesAudios: JSON.stringify(require('./directories/audiosDirectory').directoriesAudios()) });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // image manager
 app.get('/image-manager', function(req, res) {
     res.render(__dirname + '/code/ejs/image-manager', { ejsImages: JSON.stringify(require('./directories/imagesDirectory').images()), ejsDirectoriesNames: JSON.stringify(require('./directories/imagesDirectory').directoriesNames()), ejsDirectoriesImages: JSON.stringify(require('./directories/imagesDirectory').directoriesImages()) });
@@ -708,59 +715,35 @@ app.get('/uploaded-other', function (req, res) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// delete page
-app.get('/delete-files', function(req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/delete-files.html');
-});
-
 // delete video
 app.post('/delete-video', function (req, res) {
-    let dlVideo = req.body.dlVideo;
-    let videoPath = 'C:\\storage\\Projects\\Programmation\\Web Developpement\\Mean Stack\\file-manager\\storage\\videos\\' + dlVideo;
+    let videoSrc = req.body.videoSrc;
+    let videoPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + videoSrc;
     fs.unlink(videoPath, function (err) {
         if (err) throw err;
         console.log(videoPath + ' is deleted');
     });
-    res.redirect('/deleted-video');
-});
-
-// deleted video
-app.get('/deleted-video', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/deleted/delete-video.html')
 });
 
 // delete audio
 app.post('/delete-audio', function (req, res) {
-    let dlAudio = req.body.dlAudio;
-    let audioPath = 'C:\\storage\\Projects\\Programmation\\Web Developpement\\Mean Stack\\file-manager\\storage\\audios\\' + dlAudio;
+    let audioSrc = req.body.audioSrc;
+    let audioPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + audioSrc;
     fs.unlink(audioPath, function (err) {
         if (err) throw err;
         console.log(audioPath + ' is deleted');
     });
-    res.redirect('/deleted-audio');
-});
-
-// deleted audio
-app.get('/deleted-audio', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/deleted/delete-audio.html')
 });
 
 // delete image
 app.post('/delete-image', function (req, res) {
-    let dlImage = req.body.dlImage;
-    let imagePath = 'C:\\storage\\Projects\\Programmation\\Web Developpement\\Mean Stack\\file-manager\\storage\\images\\' + dlImage;
+    let imgSrc = req.body.imgSrc;
+    let imagePath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + imgSrc;
     fs.unlink(imagePath, function (err) {
         if (err) throw err;
         console.log(imagePath + ' is deleted');
     });
-    res.redirect('/deleted-image');
 });
-
-// deleted image
-app.get('/deleted-image', function (req, res) {
-    res.sendFile(__dirname + '/code/webpages/upload-delete/deleted/delete-image.html')
-});
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -769,13 +752,13 @@ app.get('/deleted-image', function (req, res) {
 const { exec } = require('child_process');
 
 app.get('/shutdown', function(req, res) {
-  exec('shutdown -p', (err, stdout, stderr) => {
-    if (err) {
-      console.log('node couldn\'t execute the command');
-      return;
-    }
-  });
-  res.sendFile(__dirname + '/code/webpages/shutdown.html');
+    res.sendFile(__dirname + '/code/webpages/shutdown.html');
+    exec('shutdown -p', (err, stdout, stderr) => {
+        if (err) {
+            console.log('node couldn\'t execute the command');
+            return;
+        }
+    });
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
