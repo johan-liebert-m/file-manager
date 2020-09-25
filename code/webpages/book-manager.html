@@ -8,11 +8,53 @@
     <script src="/scripts/bootstrap.min.js" defer="true"></script>
     <script src="/scripts/popper.min.js" defer="true"></script>
     <!-- // -->
+    <script>
+        let fontawesome4 = document.createElement("link");
+        fontawesome4.setAttribute("rel", "stylesheet");
+        fontawesome4.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+        window.addEventListener("load", function() {
+            document.head.appendChild(fontawesome4);
+        });
+        </script>
     <meta charset="UTF-8">
     <title>Home</title>
     <style>
-        h1 {
-            color: dodgerblue;
+        html,body { height:100%; overflow: hidden; }
+        h2 {
+            color: white;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+        h2:hover {
+            transform: scale(1.2);
+        }
+        #pdf, #ebook {
+            color: rgb(236, 236, 236);
+            font-size: 10vw;
+            margin: 15vw 0 2vw 0;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+        #pdf:hover, #ebook:hover {
+            transform: scale(1.2);
+        }
+        @media screen and (max-width: 600px) {
+            #pdf, #ebook {
+                font-size: 17vw;
+                margin: 40vw 0 2vw 0;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            #pdf, #ebook {
+                font-size: 15vw;
+                margin: 30vw 0 2vw 0;
+            }
+        }
+        @media screen and (max-width: 992px) {
+            #pdf, #ebook {
+                font-size: 13vw;
+                margin: 20vw 0 2vw 0;
+            }
         }
     </style>
 </head>
@@ -60,10 +102,26 @@
     <script src="/scripts/shutdown.js" defer="true"></script>
     <!-- // -->
 
-    <div class="container-fluid">
-        <div class="jumbotron row">
-            <h1>Home server for storage</h1>
+    <div class="container-fluid" style="height: 100%; width: 100%; padding: 0; margin: 0; position: relative; top: 0; bottom: 0;">
+        <div class="row" style="height: 100%; width: 100%; padding: 0; margin: 0;">
+            <div class="col-6" style="background-color: rgb(190, 11, 35); height: 100%; width: 100%;text-align: center">
+                <i id="pdf" class="fa fa-file-pdf-o" onclick="pdf()"></i>
+                <h2 onclick="pdf()">PDF</h2>
+            </div>
+            <div class="col-6" style="background-color: rgb(18, 192, 120); height: 100%; width: 100%;text-align: center">
+                <i id="ebook" class="fa fa-book" onclick="ebook()"></i>
+                <h2 onclick="ebook()">eBook</h2>
+            </div>
         </div>
     </div>
+
+    <script>
+        function pdf() {
+            window.open("/pdf-manager", "_self");
+        }
+        function ebook() {
+            window.open("/ebook-manager", "_self");
+        }
+    </script>
 </body>
 </html>

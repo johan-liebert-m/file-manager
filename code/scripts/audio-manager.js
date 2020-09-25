@@ -1,4 +1,5 @@
 let displayedAudio = null;
+let displayedAudioFolderName = null;
 function setAudio(src, title, audioLI) {
     document.getElementById("audio-title").innerHTML = title;
     document.getElementById("audio-source").setAttribute("src", src);
@@ -16,9 +17,11 @@ for (let i = 0; i < audios.length; i++) {
     a.innerHTML = audios[i];
     a.addEventListener("click", function() {
         setAudio("/audios/" + a.innerHTML, a.innerHTML, li);
+        displayedAudioFolderName = null;
     });
     li.addEventListener("click", function() {
         setAudio("/audios/" + a.innerHTML, a.innerHTML, li);
+        displayedAudioFolderName = null;
     });
     li.appendChild(a);
     ul.appendChild(li);
@@ -62,9 +65,11 @@ for (let i = 0; i < directoriesNames.length; i++) {
         sA.innerHTML = directoriesAudios[i][j];
         sA.addEventListener("click", function() {
             setAudio("/audios/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedAudioFolderName = directoriesNames[i];
         });
         sLI.addEventListener("click", function() {
             setAudio("/audios/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedAudioFolderName = directoriesNames[i];
         });
         sLI.appendChild(sA);
         sUL.appendChild(sLI);
@@ -107,15 +112,7 @@ function hideDeleteAudioPopper() {
     document.getElementById("delete-audio-popper").style.transform = "translate(-50%, -50%) scale(0)";
 }
 
-function deleteAudio() {
-    $.post("/delete-audio",
-    {
-        audioSrc: document.getElementById("audio-source").getAttribute("src")
-    },
-    function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-    document.getElementById("hideDeleteAudio").click();
+function graphicDelete() {
     let deletedAudio = displayedAudio
     if (displayedAudio.nextSibling != null) {
         displayedAudio.nextSibling.click()
@@ -124,10 +121,52 @@ function deleteAudio() {
         displayedAudio.previousSibling.click();
     }
     else {
-        document.getElementById("audio-source").setAttribute("src", "/audios/welcome.jpg");
         document.getElementById("audio-title").innerHTML = "No audio is displayed";
         deletedAudio.parentNode.previousSibling.childNodes[1].className = "fa fa-arrow-down";
     }
     deletedAudio.remove();
     deletedAudio = null;
+}
+
+function deleteAudio() {
+    if (displayedAudio != null) {
+        if (displayedAudio.parentElement.parentElement.tagName != "div") {
+            if (displayedAudio.parentElement.childNodes.length != 1) {
+                $.post("/delete-audio",
+                {
+                    audioSrc: document.getElementById("audio-source").getAttribute("src"),
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                graphicDelete();            
+            }
+            else {
+                $.post("/delete-audio",
+                {
+                    audioFolder: "/audios/" + displayedAudioFolderName,
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                document.getElementById("audio-source").setAttribute("src", "/music/Funny1.mp3");
+                document.getElementById("audio").load();
+                document.getElementById("audio-title").innerHTML = "No audio is displayed";   
+                displayedAudio.parentElement.previousSibling.remove();
+                displayedAudio.parentElement.remove();
+                displayedAudio = null;                     
+            }
+        }
+        else {
+            $.post("/delete-audio",
+            {
+                audioSrc: document.getElementById("audio-source").getAttribute("src"),
+            },
+            function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+            graphicDelete();     
+        }
+    }  
+    hideDeleteAudioPopper();  
 }

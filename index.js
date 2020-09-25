@@ -48,9 +48,29 @@ app.get('/image-manager', function(req, res) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// book manager
+app.get('/book-manager', function(req, res) {
+    res.sendFile(__dirname + '/code/webpages/book-manager.html');
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// pdf manager
+app.get('/pdf-manager', function(req, res) {
+    res.render(__dirname + '/code/ejs/pdf-manager', { ejsPdfs: JSON.stringify(require('./directories/pdfsDirectory').pdfs()), ejsDirectoriesNames: JSON.stringify(require('./directories/pdfsDirectory').directoriesNames()), ejsDirectoriesPdfs: JSON.stringify(require('./directories/pdfsDirectory').directoriesPdfs()) });
+});
+
+// ebook manager
+app.get('/ebook-manager', function(req, res) {
+    res.render(__dirname + '/code/ejs/ebook-manager', { ejsEbooks: JSON.stringify(require('./directories/ebooksDirectory').ebooks()), ejsDirectoriesNames: JSON.stringify(require('./directories/ebooksDirectory').directoriesNames()), ejsDirectoriesEbooks: JSON.stringify(require('./directories/ebooksDirectory').directoriesEbooks()) });
+});
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // upload page
 app.get('/upload-files', function (req, res) {
-    res.render(__dirname + '/code/ejs/upload-files', { ejsVideosFolders: JSON.stringify(require('./directories/videosDirectory').directory()), ejsAudiosFolders: JSON.stringify(require('./directories/audiosDirectory').directory()), ejsImagesFolders: JSON.stringify(require('./directories/imagesDirectory').directory()), ejsPdfsFolders: JSON.stringify(require('./directories/pdfDirectory').directory()), ejsEbooksFolders: JSON.stringify(require('./directories/ebooksDirectory').directory()), ejsCompressedSoftwaresFolders: JSON.stringify(require('./directories/compressedSoftwaresDirectory').directory()), ejsIsoSoftwaresFolders: JSON.stringify(require('./directories/isoSoftwaresDirectory').directory()), ejsCompressedGamesFolders: JSON.stringify(require('./directories/compressedGamesDirectory').directory()), ejsIsoGamesFolders: JSON.stringify(require('./directories/isoGamesDirectory').directory()), ejsApkAppsFolders: JSON.stringify(require('./directories/apkAppsDirectory').directory()), ejsCompressedAppsFolders: JSON.stringify(require('./directories/compressedAppsDirectory').directory()), ejsCompressedOthersFolders: JSON.stringify(require('./directories/compressedOthersDirectory').directory()), ejsIsoOthersFolders: JSON.stringify(require('./directories/isoOthersDirectory').directory()) });
+    res.render(__dirname + '/code/ejs/upload-files', { ejsVideosFolders: JSON.stringify(require('./directories/videosDirectory').directory()), ejsAudiosFolders: JSON.stringify(require('./directories/audiosDirectory').directory()), ejsImagesFolders: JSON.stringify(require('./directories/imagesDirectory').directory()), ejsPdfsFolders: JSON.stringify(require('./directories/pdfsDirectory').directory()), ejsEbooksFolders: JSON.stringify(require('./directories/ebooksDirectory').directory()), ejsCompressedSoftwaresFolders: JSON.stringify(require('./directories/compressedSoftwaresDirectory').directory()), ejsIsoSoftwaresFolders: JSON.stringify(require('./directories/isoSoftwaresDirectory').directory()), ejsCompressedGamesFolders: JSON.stringify(require('./directories/compressedGamesDirectory').directory()), ejsIsoGamesFolders: JSON.stringify(require('./directories/isoGamesDirectory').directory()), ejsApkAppsFolders: JSON.stringify(require('./directories/apkAppsDirectory').directory()), ejsCompressedAppsFolders: JSON.stringify(require('./directories/compressedAppsDirectory').directory()), ejsCompressedOthersFolders: JSON.stringify(require('./directories/compressedOthersDirectory').directory()), ejsIsoOthersFolders: JSON.stringify(require('./directories/isoOthersDirectory').directory()) });
 });
 
 // upload video
@@ -269,12 +289,12 @@ app.post('/upload-book', function (req, res) {
         else if (files.upEbook != undefined) {
             if (files.upEbook[1] == undefined) {
                 if (fields.folderName == undefined) {
-                    fs.rename(files.upEbook.path, __dirname + '/storage/books/ebooks/' + files.upEbook.name, function (err) {
+                    fs.rename(files.upEbook.path, __dirname + '/storage/books/ebook/' + files.upEbook.name, function (err) {
                         if (err) throw err;
                     });
                 }
                 else {
-                    let newpath = __dirname + '/storage/books/ebooks/' + fields.folderName;
+                    let newpath = __dirname + '/storage/books/ebook/' + fields.folderName;
                     if (!fs.existsSync(newpath)){
                         fs.mkdirSync(newpath);
                     }
@@ -288,13 +308,13 @@ app.post('/upload-book', function (req, res) {
                 if (fields.folderName != undefined) {
                     if (fields.folderName.length < 1) {
                         for (let i = 0; i < files.upEbook.length; i++) {
-                            fs.rename(files.upEbook[i].path, __dirname + '/storage/books/ebooks/' + files.upEbook[i].name, function (err) {
+                            fs.rename(files.upEbook[i].path, __dirname + '/storage/books/ebook/' + files.upEbook[i].name, function (err) {
                                 if (err) throw err;
                             });
                         }
                     }
                     else {
-                        let newpath = __dirname + '/storage/books/ebooks/' + fields.folderName;
+                        let newpath = __dirname + '/storage/books/ebook/' + fields.folderName;
                         if (!fs.existsSync(newpath)){
                             fs.mkdirSync(newpath);
                         }
@@ -717,32 +737,74 @@ app.get('/uploaded-other', function (req, res) {
 
 // delete video
 app.post('/delete-video', function (req, res) {
-    let videoSrc = req.body.videoSrc;
-    let videoPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + videoSrc;
-    fs.unlink(videoPath, function (err) {
-        if (err) throw err;
-        console.log(videoPath + ' is deleted');
-    });
+    if (req.body.videoFolder != undefined) {
+        let videoFolder = req.body.videoFolder;
+        let videoFolderPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + videoFolder;
+        let rimraf = require("rimraf");
+        rimraf(videoFolderPath, function () { console.log(videoFolderPath + ' is deleted'); });        
+    }
+    else {
+        let videoSrc = req.body.videoSrc;
+        let videoPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + videoSrc;
+        fs.unlink(videoPath, function (err) {
+            if (err) throw err;
+            console.log(videoPath + ' is deleted');
+        });        
+    }
 });
 
 // delete audio
 app.post('/delete-audio', function (req, res) {
-    let audioSrc = req.body.audioSrc;
-    let audioPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + audioSrc;
-    fs.unlink(audioPath, function (err) {
-        if (err) throw err;
-        console.log(audioPath + ' is deleted');
-    });
+    if (req.body.audioFolder != undefined) {
+        let audioFolder = req.body.audioFolder;
+        let audioFolderPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + audioFolder;
+        let rimraf = require("rimraf");
+        rimraf(audioFolderPath, function () { console.log(audioFolderPath + ' is deleted'); });        
+    }
+    else {
+        let audioSrc = req.body.audioSrc;
+        let audioPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + audioSrc;
+        fs.unlink(audioPath, function (err) {
+            if (err) throw err;
+            console.log(audioPath + ' is deleted');
+        });        
+    }
 });
 
 // delete image
 app.post('/delete-image', function (req, res) {
-    let imgSrc = req.body.imgSrc;
-    let imagePath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + imgSrc;
-    fs.unlink(imagePath, function (err) {
-        if (err) throw err;
-        console.log(imagePath + ' is deleted');
-    });
+    if (req.body.imgFolder != undefined) {
+        let imgFolder = req.body.imgFolder;
+        let imgFolderPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + imgFolder;
+        let rimraf = require("rimraf");
+        rimraf(imgFolderPath, function () { console.log(imgFolderPath + ' is deleted'); });        
+    }
+    else {
+        let imgSrc = req.body.imgSrc;
+        let imgPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + imgSrc;
+        fs.unlink(imgPath, function (err) {
+            if (err) throw err;
+            console.log(imgPath + ' is deleted');
+        });        
+    }
+});
+
+// delete book
+app.post('/delete-book', function (req, res) {
+    if (req.body.bookFolder != undefined) {
+        let bookFolder = req.body.bookFolder;
+        let bookFolderPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + bookFolder;
+        let rimraf = require("rimraf");
+        rimraf(bookFolderPath, function () { console.log(bookFolderPath + ' is deleted'); });        
+    }
+    else {
+        let bookSrc = req.body.bookSrc;
+        let bookPath = 'C:\\storage/Projects/Programmation/Web Developpement/Mean Stack/file-manager/storage' + bookSrc;
+        fs.unlink(bookPath, function (err) {
+            if (err) throw err;
+            console.log(bookPath + ' is deleted');
+        });        
+    }
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

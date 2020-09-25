@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <title>PDF</title>
+        <!-- css -->
+        <link rel="stylesheet" href="/stylesheets/pdf-manager.css">
+        <!-- // -->
+        <!-- script -->
+        <script src="/scripts/pdf-manager.js" defer="true"></script>
+        <!-- // -->
+        <!-- frameworks -->
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="/stylesheets/bootstrap-4.5.0.css">
+        <script src="/scripts/jquery.min.js" defer="true"></script>
+        <script src="/scripts/bootstrap.min.js" defer="true"></script>
+        <script src="/scripts/popper.min.js" defer="true"></script>
+        <!-- // -->
+        <script>
+        let fontawesome4 = document.createElement("link");
+        fontawesome4.setAttribute("rel", "stylesheet");
+        fontawesome4.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+        window.addEventListener("load", function() {
+            document.head.appendChild(fontawesome4);
+        });
+        </script>
+        <!-- // -->
+        <script>
+        let pdfs = <%- JSON.stringify( ejsPdfs ) %>;
+        pdfs = JSON.parse(pdfs);
+        let directoriesNames = <%- JSON.stringify( ejsDirectoriesNames ) %>;
+        directoriesNames = JSON.parse(directoriesNames);
+        let directoriesPdfs = <%- JSON.stringify( ejsDirectoriesPdfs ) %>;
+        directoriesPdfs = JSON.parse(directoriesPdfs);
+        </script>
+        </head>    
+
+    <body>
+
+        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File Manager</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/video-manager">Videos</a>
+                        <a class="dropdown-item" href="/audio-manager">Audios</a>
+                        <a class="dropdown-item" href="/image-manager">Images</a>
+                        <a class="dropdown-item" href="/book-manager">Books</a>
+                        <a class="dropdown-item" href="#">Softwares</a>
+                        <a class="dropdown-item" href="#">Games</a>
+                        <a class="dropdown-item" href="#">Applications</a>
+                        <a class="dropdown-item" href="#">Others</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/upload-files">Upload</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <div class="nav-link" style="cursor: pointer;user-select: none" onclick="showShutdownPopUp()">Shutdown</div>
+              </li>
+            </ul>
+        </nav>
+        <div id="background-shutdown" class="container-fluid">
+            <div class="row">
+                <h1 class="text-info">Are you sure you want to shutdown the server !</h1>
+            </div><br><br><br>
+            <div class="row">
+                <button type="button" onclick="shutdown()" class="btn btn-success col-lg-5">Yes</button>
+                <div class="col-lg-2" style="height: 2.5vw"></div>
+                <button type="button" onclick="hideShutdownPopUp()" class="btn btn-danger col-lg-5">No</button>
+            </div>
+        </div>
+        <!-- Shutdown popup -->
+        <link rel="stylesheet" href="/stylesheets/shutdown.css">
+        <script src="/scripts/shutdown.js" defer="true"></script>
+        <!-- // -->
+
+        <div class="container-fluid">
+            <div class="jumbotron row pt-4 pb-4 mb-1 mt-1" style="word-wrap: break-word">
+                <h2>PDF Manager</h2>
+            </div>
+            <div class="jumbotron row pt-4 pb-4 mb-3" style="word-wrap: break-word">
+                <h2 class="text-center col-12" id="book-title">No book is displayed</h2>
+            </div>
+            <div class="row pl-3 pr-0" style="width: 100%;height: 40vw">
+                <div id="manager" class="col-lg-3 col-sm-12 mb-4">
+                </div>
+                <div id="book-container" class="col-lg-9 col-sm-12 mb-5" style="width: 100%;height: 100%">
+                    <i id="delete-icon" class="fa fa-close delete-icon" style="font-size: 4vw"></i>
+                    <div id="book" controls style="width: 100%;height: 100%;border: 1px solid black;border-radius: 5px">
+                        <iframe id="book-source" src="/pdfs/welcome.pdf" style="width: 100%; height: 100%" frameBorder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="delete-book-popper-container" class="container-fluid">
+            <div id="delete-book-popper" class="container-fluid">
+                <div class="row">
+                    <h1 class="text-info delete-book-text">Are you sure you want to delete this book !</h1>
+                </div><br><br><br>
+                <div class="row">
+                    <button type="button" onclick="deleteBook()" class="btn btn-success col-lg-5">Delete</button>
+                    <div class="col-lg-2" style="height: 2.5vw"></div>
+                    <button id="hideDeleteBook" type="button" onclick="hideDeleteBookPopper()" class="btn btn-danger col-lg-5">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="width: 100vw;height: 4vw"></div>    
+
+    </body>
+</html>

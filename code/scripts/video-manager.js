@@ -1,4 +1,5 @@
 let displayedVideo = null;
+let displayedVideoFolderName = null;
 function setVideo(src, title, videoLI) {
     document.getElementById("video-title").innerHTML = title;
     document.getElementById("video-source").setAttribute("src", src);
@@ -16,9 +17,11 @@ for (let i = 0; i < videos.length; i++) {
     a.innerHTML = videos[i];
     a.addEventListener("click", function() {
         setVideo("/videos/" + a.innerHTML, a.innerHTML, li);
+        displayedVideoFolderName = null;
     });
     li.addEventListener("click", function() {
         setVideo("/videos/" + a.innerHTML, a.innerHTML, li);
+        displayedVideoFolderName = null;
     });
     li.appendChild(a);
     ul.appendChild(li);
@@ -62,9 +65,11 @@ for (let i = 0; i < directoriesNames.length; i++) {
         sA.innerHTML = directoriesVideos[i][j];
         sA.addEventListener("click", function() {
             setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedVideoFolderName = directoriesNames[i];
         });
         sLI.addEventListener("click", function() {
             setVideo("/videos/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedVideoFolderName = directoriesNames[i];
         });
         sLI.appendChild(sA);
         sUL.appendChild(sLI);
@@ -107,15 +112,7 @@ function hideDeleteVideoPopper() {
     document.getElementById("delete-video-popper").style.transform = "translate(-50%, -50%) scale(0)";
 }
 
-function deleteVideo() {
-    $.post("/delete-video",
-    {
-        videoSrc: document.getElementById("video-source").getAttribute("src")
-    },
-    function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-    document.getElementById("hideDeleteVideo").click();
+function graphicDelete() {
     let deletedVideo = displayedVideo
     if (displayedVideo.nextSibling != null) {
         displayedVideo.nextSibling.click()
@@ -124,10 +121,52 @@ function deleteVideo() {
         displayedVideo.previousSibling.click();
     }
     else {
-        document.getElementById("video-source").setAttribute("src", "/videos/welcome.jpg");
         document.getElementById("video-title").innerHTML = "No video is displayed";
         deletedVideo.parentNode.previousSibling.childNodes[1].className = "fa fa-arrow-down";
     }
     deletedVideo.remove();
     deletedVideo = null;
+}
+
+function deleteVideo() {
+    if (displayedVideo != null) {
+        if (displayedVideo.parentElement.parentElement.tagName != "div") {
+            if (displayedVideo.parentElement.childNodes.length != 1) {
+                $.post("/delete-video",
+                {
+                    videoSrc: document.getElementById("video-source").getAttribute("src"),
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                graphicDelete();            
+            }
+            else {
+                $.post("/delete-video",
+                {
+                    videoFolder: "/videos/" + displayedVideoFolderName,
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                document.getElementById("video-source").setAttribute("src", "");
+                document.getElementById("video").load();
+                document.getElementById("video-title").innerHTML = "No video is displayed";   
+                displayedVideo.parentElement.previousSibling.remove();
+                displayedVideo.parentElement.remove();
+                displayedVideo = null;                     
+            }
+        }
+        else {
+            $.post("/delete-video",
+            {
+                videoSrc: document.getElementById("video-source").getAttribute("src"),
+            },
+            function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+            graphicDelete();     
+        }
+    }  
+    hideDeleteVideoPopper();  
 }

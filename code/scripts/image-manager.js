@@ -1,4 +1,5 @@
 let displayedImg = null;
+let displayedImgFolderName = null;
 function setImage(src, title, imgLI) {
     document.getElementById("image-title").innerHTML = title;
     document.getElementById("image-source").setAttribute("src", src);
@@ -16,9 +17,11 @@ for (let i = 0; i < images.length; i++) {
     a.innerHTML = images[i];
     a.addEventListener("click", function() {
         setImage("/images/" + a.innerHTML, a.innerHTML, li);
+        displayedImgFolderName = null;
     });
     li.addEventListener("click", function() {
         setImage("/images/" + a.innerHTML, a.innerHTML, li);
+        displayedImgFolderName = null;
     });
     li.appendChild(a);
     ul.appendChild(li);
@@ -63,9 +66,11 @@ for (let i = 0; i < directoriesNames.length; i++) {
         sA.innerHTML = directoriesImages[i][j];
         sA.addEventListener("click", function() {
             setImage("/images/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedImgFolderName = directoriesNames[i];
         });
         sLI.addEventListener("click", function() {
             setImage("/images/" + directoriesNames[i] + "/" + sA.innerHTML, sA.innerHTML, sLI);
+            displayedImgFolderName = directoriesNames[i];
         });
         sLI.appendChild(sA);
         sUL.appendChild(sLI);
@@ -354,15 +359,7 @@ function hideDeleteImagePopper() {
     document.getElementById("delete-image-popper").style.transform = "translate(-50%, -50%) scale(0)";
 }
 
-function deleteImage() {
-    $.post("/delete-image",
-    {
-        imgSrc: document.getElementById("image-source").getAttribute("src")
-    },
-    function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-    document.getElementById("hideDeleteImage").click();
+function graphicDelete() {
     let deletedImg = displayedImg
     if (displayedImg.nextSibling != null) {
         displayedImg.nextSibling.click()
@@ -371,10 +368,51 @@ function deleteImage() {
         displayedImg.previousSibling.click();
     }
     else {
-        document.getElementById("image-source").setAttribute("src", "/images/welcome.jpg");
-        document.getElementById("image-title").innerHTML = "No image is displayed";
+        document.getElementById("img-title").innerHTML = "No img is displayed";
         deletedImg.parentNode.previousSibling.childNodes[1].className = "fa fa-arrow-down";
     }
     deletedImg.remove();
     deletedImg = null;
+}
+
+function deleteImage() {
+    if (displayedImg != null) {
+        if (displayedImg.parentElement.parentElement.tagName != "div") {
+            if (displayedImg.parentElement.childNodes.length != 1) {
+                $.post("/delete-image",
+                {
+                    imgSrc: document.getElementById("image-source").getAttribute("src"),
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                graphicDelete();            
+            }
+            else {
+                $.post("/delete-image",
+                {
+                    imgFolder: "/images/" + displayedImgFolderName,
+                },
+                function(data, status){
+                    alert("Data: " + data + "\nStatus: " + status);
+                });
+                document.getElementById("image-source").setAttribute("src", "/images/welcome.jpg");
+                document.getElementById("image-title").innerHTML = "No img is displayed";   
+                displayedImg.parentElement.previousSibling.remove();
+                displayedImg.parentElement.remove();
+                displayedImg = null;                     
+            }
+        }
+        else {
+            $.post("/delete-image",
+            {
+                imgSrc: document.getElementById("img-source").getAttribute("src"),
+            },
+            function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+            graphicDelete();     
+        }
+    }  
+    hideDeleteImagePopper();  
 }
